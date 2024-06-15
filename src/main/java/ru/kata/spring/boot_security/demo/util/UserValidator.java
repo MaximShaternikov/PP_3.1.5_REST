@@ -7,6 +7,8 @@ import org.springframework.validation.Validator;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import java.util.Optional;
+
 @Component
 public class UserValidator implements Validator {
     private final UserService userService;
@@ -24,9 +26,9 @@ public class UserValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         User user = (User) target;
-        User oldUser = userService.findByUsername(user.getUsername());
+        Optional<User> oldUser = userService.findByUsername(user.getUsername());
 
-        if (oldUser != null && !oldUser.getId().equals(user.getId())) {
+        if (oldUser.isPresent() && !oldUser.get().getId().equals(user.getId())) {
             errors.rejectValue("username", "","Username already exists");
         }
     }

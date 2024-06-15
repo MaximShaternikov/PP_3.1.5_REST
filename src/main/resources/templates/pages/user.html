@@ -39,10 +39,10 @@
         </thead>
         <tbody>
         <tr>
-            <td th:text="${user.firstName}"></td>
-            <td th:text="${user.lastName}"></td>
-            <td th:text="${user.age}"></td>
-            <td th:text="${user.username}"></td>
+            <td th:text="${user.isPresent() ? user.get().firstName : ''}"></td>
+            <td th:text="${user.isPresent() ? user.get().lastName : ''}"></td>
+            <td th:text="${user.isPresent() ? user.get().age : ''}"></td>
+            <td th:text="${user.isPresent() ? user.get().username : ''}"></td>
         </tr>
         </tbody>
     </table>
