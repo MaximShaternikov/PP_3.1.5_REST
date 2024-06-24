@@ -8,7 +8,6 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.UsersRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -29,8 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(long id) {
-        Optional<User> userFromDb = usersRepository.findById(id);
-        return userFromDb.orElse(new User());
+        return usersRepository.getById(id);
     }
 
     @Transactional
