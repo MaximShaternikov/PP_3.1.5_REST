@@ -1,12 +1,12 @@
 async function getRoles() {
     const response = await fetch(`/api/admin/roles`);
-    return await response.json();
+    return response.json();
 }
 
 async function sendDataEditUser(user) {
-    await fetch(`/api/admin/` + user.id, {
+    await fetch(`/api/admin/${user.id}`, {
         method: "PATCH",
-        headers: {'Content-type': 'application/json'},
+        headers: { 'Content-type': 'application/json' },
         body: JSON.stringify(user)
     });
 }
@@ -14,7 +14,7 @@ async function sendDataEditUser(user) {
 const modalEdit = document.getElementById("editModal");
 
 async function EditModalHandler() {
-    await fillModal(modalEdit);
+    await modalWindow(modalEdit);
 }
 
 modalEdit.addEventListener("submit", async function (event) {
@@ -22,31 +22,28 @@ modalEdit.addEventListener("submit", async function (event) {
 
     const rolesSelected = document.getElementById("rolesEdit");
 
-    let allRole = await getRoles();
-    let AllRoles = {};
-    for (let role of allRole) {
-        AllRoles[role.name] = role.id;
-    }
-    let roles = [];
-    for (let option of rolesSelected.selectedOptions) {
-        if (Object.keys(AllRoles).indexOf(option.value) !== -1) {
-            roles.push({roleId: AllRoles[option.value], name: option.value});
-        }
-    }
+    const allRoles = await getRoles();
+    const rolesMap = allRoles.reduce((acc, role) => {
+        acc[role.name] = role.id;
+        return acc;
+    }, {});
 
-    let user = {
+    const roles = Array.from(rolesSelected.selectedOptions)
+        .filter(option => rolesMap.hasOwnProperty(option.value))
+        .map(option => ({ roleId: rolesMap[option.value], name: option.value }));
+
+    const user = {
         id: document.getElementById("idEdit").value,
         firstName: document.getElementById("firstNameEdit").value,
         lastName: document.getElementById("lastNameEdit").value,
         age: document.getElementById("ageEdit").value,
         email: document.getElementById("emailEdit").value,
         password: document.getElementById("passwordEdit").value,
-        roles: roles
-    }
+        roles
+    };
 
     await sendDataEditUser(user);
     await fillTableOfAllUsers();
 
-    const modalBootstrap = bootstrap.Modal.getInstance(modalEdit);
-    modalBootstrap.hide();
+    bootstrap.Modal.getInstance(modalEdit).hide();
 });

@@ -3,10 +3,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 async function userTable() {
-    const response = await fetch("/api/user/");
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    const response = await fetch("/api/user");
     const user = await response.json();
     const roles = user.roles.map(role => role.name.substring(5)).join(" ");
     $("#navbarUserEmail").text(user.email);

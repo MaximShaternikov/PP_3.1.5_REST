@@ -1,48 +1,48 @@
 async function getRoles() {
     const response = await fetch("/api/admin/roles");
-    return await response.json();
+    return response.json();
 }
-
 
 async function createNewUser(user) {
-    await fetch("/api/admin/new",
-        {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(user)})
-
+    await fetch("/api/admin/new", {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(user)
+    });
 }
 
-async function addNewUserForm() {
+async function newUserForm() {
     const newUserForm = document.getElementById("newUserForm");
 
     newUserForm.addEventListener('submit', async function (event) {
         event.preventDefault();
 
-        const firstName = newUserForm.querySelector("#firstName").value.trim();
-        const lastName = newUserForm.querySelector("#lastName").value.trim();
-        const age = newUserForm.querySelector("#age").value.trim();
-        const email = newUserForm.querySelector("#email").value.trim();
-        const password = newUserForm.querySelector("#password").value.trim();
+        const getValueAndTrim = (id) => newUserForm.querySelector(id).value.trim();
+
+        const firstName = getValueAndTrim("#firstName");
+        const lastName = getValueAndTrim("#lastName");
+        const age = getValueAndTrim("#age");
+        const email = getValueAndTrim("#email");
+        const password = getValueAndTrim("#password");
         const rolesSelected = document.getElementById("roles");
 
-        let allRole = await getRoles();
-        let AllRoles = {};
-        for (let role of allRole) {
-            AllRoles[role.name] = role.id;
-        }
-        let roles = [];
-        for (let option of rolesSelected.selectedOptions) {
-            if (Object.keys(AllRoles).indexOf(option.value) !== -1) {
-                roles.push({roleId: AllRoles[option.value], name: option.value});
-            }
-        }
+        const allRoles = await getRoles();
+        const rolesMap = allRoles.reduce((acc, role) => {
+            acc[role.name] = role.id;
+            return acc;
+            }, {});
 
+        const roles = Array.from(rolesSelected.selectedOptions)
+            .filter(option => rolesMap.hasOwnProperty(option.value))
+            .map(option => ({roleId: rolesMap[option.value], name: option.value}));
 
         const newUserData = {
-            firstName: firstName,
-            lastName: lastName,
-            age: age,
-            email: email,
-            password: password,
-            roles: roles
+            firstName,
+            lastName,
+            age,
+            email,
+            password,
+            roles
         };
 
         await createNewUser(newUserData);

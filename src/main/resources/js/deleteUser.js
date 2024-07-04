@@ -1,22 +1,22 @@
 async function deleteUserData(userId) {
-    await fetch(`/api/admin/${userId}`, {method: 'DELETE'});
+    await fetch(`/api/admin/${userId}`, {
+        method: 'DELETE'
+    });
 }
 
 const modalDelete = document.getElementById("deleteModal");
 
 async function DeleteModalHandler() {
-    await fillModal(modalDelete);
+    await modalWindow(modalDelete);
 }
 
-let formDelete = document.forms["modalBodyDelete"];
-formDelete.addEventListener("submit", async function (event) {
-        event.preventDefault();
+const formDelete = document.forms["modalBodyDelete"];
+formDelete.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-        let userId = formDelete.id.value;
-        await deleteUserData(userId);
-        await fillTableOfAllUsers();
+    const userId = formDelete.id.value;
+    await deleteUserData(userId);
+    await fillTableOfAllUsers();
 
-        const modalBootstrap = bootstrap.Modal.getInstance(modalDelete);
-        modalBootstrap.hide();
-    }
-)
+    bootstrap.Modal.getInstance(modalDelete).hide();
+});

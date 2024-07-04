@@ -3,7 +3,7 @@ async function getUserDataById(userId) {
     return response.json();
 }
 
-async function fillModal(modal) {
+async function modalWindow(modal) {
     modal.addEventListener("show.bs.modal", async function (event) {
         const userId = event.relatedTarget.dataset.userId;
         const user = await getUserDataById(userId);
