@@ -43,7 +43,7 @@ modalEdit.addEventListener("submit", async function (event) {
     };
 
     await sendDataEditUser(user);
-    await fillTableOfAllUsers();
+    await usersTable();
 
     bootstrap.Modal.getInstance(modalEdit).hide();
 });

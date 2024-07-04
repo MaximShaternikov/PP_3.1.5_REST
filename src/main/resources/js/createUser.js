@@ -49,6 +49,6 @@ async function newUserForm() {
         newUserForm.reset();
 
         document.querySelector('#users-tab').click();
-        await fillTableOfAllUsers();
+        await usersTable();
     });
 }

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    await fillTableOfAllUsers();
-    await fillTableAboutCurrentUser();
+    await usersTable();
+    await currentUserTable();
     await newUserForm();
     await DeleteModalHandler();
     await EditModalHandler();
@@ -11,7 +11,7 @@ async function fetchData(url) {
     return await response.json();
 }
 
-async function fillTableOfAllUsers() {
+async function usersTable() {
     try {
         const users = await fetchData("/api/admin");
         const usersTableInfo = users.map(user => `
@@ -32,7 +32,7 @@ async function fillTableOfAllUsers() {
     }
 }
 
-async function fillTableAboutCurrentUser() {
+async function currentUserTable() {
     try {
         const currentUser = await fetchData("/api/user");
         const roles = currentUser.roles.map(role => role.name.substring(5)).join(" ");

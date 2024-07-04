@@ -16,7 +16,7 @@ formDelete.addEventListener("submit", async (event) => {
 
     const userId = formDelete.id.value;
     await deleteUserData(userId);
-    await fillTableOfAllUsers();
+    await usersTable();
 
     bootstrap.Modal.getInstance(modalDelete).hide();
 });
