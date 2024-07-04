@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/", "/login").permitAll()
                 .anyRequest()
-                .authenticated()// Разрешаем все запросы без авторизации
+                .authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")

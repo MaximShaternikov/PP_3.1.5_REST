@@ -13,7 +13,7 @@ public interface UserService {
 
     void delete(long id);
 
-    void update(Long id, User user);
+    void update(long id, User user);
 
     User findByEmail(String email);
 }
